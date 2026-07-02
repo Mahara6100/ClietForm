@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PurePlate Client Profile</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+    margin: 0;
+    padding: 20px;
+  }
+
+  .top-bar {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  button {
+    padding: 10px 20px;
+    border: none;
+    background: #000;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+  }
+
+  #printArea {
+    width: 1120px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .page-title{
+  background-color:#175f48;
+  color:#fff;
+  text-align:center;
+  padding:10px;
+  margin-bottom:20px;
+}
+
+  .section {
+    margin-bottom: 15px;
+  }
+
+  .section p {
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  line-height: 1.6;   /* ✅ FIXES CLASHING */
+  font-size: 14px;
+}
+
+  label {
+    font-weight: bold;
+  }
+
+  textarea, input[type="text"], input[type="number"], select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    box-sizing: border-box;
+  }
+
+  .row {
+    display: flex;
+    gap: 20px;
+  }
+
+  .col {
+    flex: 1;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+
+  table, th, td {
+    border: 1px solid #000;
+  }
+
+  th {
+  padding: 8px;
+  text-align: center;
+  vertical-align: top;
+}
+
+td {
+  padding: 8px;
+  text-align: left;   /* ✅ THIS FIXES YOUR ISSUE */
+  vertical-align: top;
+}
+
+  /* ✅ FIX for long text (ONLY IMPORTANT CHANGE) */
+  .cell {
+    width: 100%;
+    min-height: 40px;
+    outline: none;
+    padding: 5px;
+    text-align: left;
+
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    font-size: 12px;
+  }
+
+  .section, tr, td {
+    page-break-inside: avoid;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="top-bar">
+  <button onclick="downloadPDF()">Download PDF</button>
+</div>
+
+<div id="printArea">
+
+  <div class="page-title">CLIENT PROFILE</div>
+
+  <!-- DESCRIPTION (UNCHANGED) -->
+  <div class="section">
+    <label>Description</label>
+    <p>
+      Main Health Goals: Weight Loss / Fat Loss / Muscle Gain / Energy / Blood Sugar Control / Gut Health / Hormonal Balance / Sleep / Athletic Performance / Longevity / Fertility / Reduce Inflammation / Other Medical History Diabetes, Prediabetes, Hypertension, High Cholesterol, Fatty Liver, Thyroid Disorder, PCOS, Heart Disease, Autoimmune Disease, Kidney Disease, Cancer, Depression/Anxiety, Sleep Apnea, IBS/IBD, GERD, Other: Current Symptoms Fatigue, Brain Fog, Poor Sleep, Snoring, Constipation, Diarrhea, Bloating, Gas, Heartburn, Headaches, Joint Pain, Hair Loss, Dry Skin, Anxiety, Depression, Low Libido, Sugar Cravings, Frequent Hunger,
+    </p>
+  </div>
+
+  <!-- ADDITIONAL NOTES (UNCHANGED) -->
+  <div class="section">
+    <label>Additional Notes</label>
+    <p>
+      Family Medical History Diabetes, Obesity, Thyroid Disease, High Blood Pressure, Heart Disease, Cancer, Autoimmune Disease, Other: Dietary Assessment
+      <br><br>
+      Meals per day: 3 Diet Type: Vegetarian / Vegan / Non-Vegetarian / Keto / Mediterranean / IF / Other Food Allergies/Intolerances: Egg
+    </p>
+  </div>
+
+  <!-- DAILY INFO (UNCHANGED) -->
+  <div class="section row">
+
+    <div class="col">
+      <label>Daily Water Intake (L)</label>
+      <input type="number">
+    </div>
+
+    <div class="col">
+      <label>Hours of Sleep</label>
+      <input type="number">
+    </div>
+
+
+    <div class="col">
+      <label>BMI</label>
+      <input type="text">
+    </div>
+
+    <div class="col">
+      <label> Target Weight</label>
+      <input type="text">
+    </div>
+
+  </div>
+
+  <!-- YES / NO (UNCHANGED) -->
+  <div class="section row">
+
+  <div class="col">
+    <label>Current Medication</label>
+    <select id="medicationSelect" onchange="toggleMedication()">
+      <option value=""></option>
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
+
+    <textarea id="medicationInput"
+      placeholder="If yes, mention here"
+      style="display:none; margin-top:10px; min-height:80px; padding:8px;">
+    </textarea>
+  </div>
+
+  <div class="col">
+    <label>Current Supplements</label>
+    <select id="supplementSelect" onchange="toggleSupplement()">
+      <option value=""></option>
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
+
+    <textarea id="supplementInput"
+      placeholder="If yes, mention here"
+      style="display:none; margin-top:10px; min-height:80px; padding:8px;">
+    </textarea>
+  </div>
+
+</div>
+
+  <!-- TABLE (ONLY FIXED FOR PDF TEXT ISSUE) -->
+  <div class="section">
+    <label></label>
+    
+
+    <table>
+  <thead>
+    <tr>
+      <th style="width: 15%;">Date</th>
+      <th style="width: 60%;">Follow Up & Review</th>
+      <th style="width: 15%;">Signature</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <tr>
+      <td><div contenteditable="true" class="cell"></div></td>
+      <td><div contenteditable="true" class="cell"></div></td>
+      <td><div contenteditable="true" class="cell"></div></td>
+    </tr>
+
+    <tr>
+      <td><div contenteditable="true" class="cell"></div></td>
+      <td><div contenteditable="true" class="cell"></div></td>
+      <td><div contenteditable="true" class="cell"></div></td>
+    </tr>
+
+    <tr>
+      <td><div contenteditable="true" class="cell"></div></td>
+      <td><div contenteditable="true" class="cell"></div></td>
+      <td><div contenteditable="true" class="cell"></div></td>
+    </tr>
+
+    <tr>
+      <td><div contenteditable="true" class="cell"></div></td>
+      <td><div contenteditable="true" class="cell"></div></td>
+      <td><div contenteditable="true" class="cell"></div></td>
+    </tr>
+
+    <tr>
+      <td><div contenteditable="true" class="cell"></div></td>
+      <td><div contenteditable="true" class="cell"></div></td>
+      <td><div contenteditable="true" class="cell"></div></td>
+    </tr>
+
+    <tr>
+      <td><div contenteditable="true" class="cell"></div></td>
+      <td><div contenteditable="true" class="cell"></div></td>
+      <td><div contenteditable="true" class="cell"></div></td>
+    </tr>
+
+    <tr>
+      <td><div contenteditable="true" class="cell"></div></td>
+      <td><div contenteditable="true" class="cell"></div></td>
+      <td><div contenteditable="true" class="cell"></div></td>
+    </tr>
+
+    <tr>
+      <td><div contenteditable="true" class="cell"></div></td>
+      <td><div contenteditable="true" class="cell"></div></td>
+      <td><div contenteditable="true" class="cell"></div></td>
+    </tr>
+
+    <tr>
+      <td><div contenteditable="true" class="cell"></div></td>
+      <td><div contenteditable="true" class="cell"></div></td>
+      <td><div contenteditable="true" class="cell"></div></td>
+    </tr>
+
+    <tr>
+      <td><div contenteditable="true" class="cell"></div></td>
+      <td><div contenteditable="true" class="cell"></div></td>
+      <td><div contenteditable="true" class="cell"></div></td>
+    </tr>
+
+  </tbody>
+</table>
+  </div>
+
+</div>
+
+<script>
+function downloadPDF() {
+  const element = document.getElementById("printArea");
+
+  const opt = {
+    margin: [8, 2, 2, 2],
+    filename: "PurePlate_Client_Profile.pdf",
+    image: { type: "jpeg", quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
+    pagebreak: { mode: ["css"] }
+  };
+
+  html2pdf().set(opt).from(element).save();
+}
+
+function toggleMedication() {
+  const select = document.getElementById("medicationSelect");
+  const input = document.getElementById("medicationInput");
+
+  if (select.value === "yes") {
+    input.style.display = "block";
+  } else {
+    input.style.display = "none";
+    input.value = "";
+  }
+}
+
+function toggleSupplement() {
+  const select = document.getElementById("supplementSelect");
+  const input = document.getElementById("supplementInput");
+
+  if (select.value === "yes") {
+    input.style.display = "block";
+  } else {
+    input.style.display = "none";
+    input.value = "";
+  }
+}
+</script>
+
+</body>
+</html>
