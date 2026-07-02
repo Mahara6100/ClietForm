@@ -205,6 +205,20 @@ td {
     </textarea>
   </div>
 
+  <div class="col">
+    <label>Allergy</label>
+    <select id="allergySelect" onchange="toggleSupplement()">
+      <option value=""></option>
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
+
+    <textarea id="allergySelect"
+      placeholder="If yes, mention here"
+      style="display:none; margin-top:10px; min-height:80px; padding:8px;">
+    </textarea>
+  </div>
+
 </div>
 
   <!-- TABLE (ONLY FIXED FOR PDF TEXT ISSUE) -->
@@ -328,6 +342,19 @@ function toggleSupplement() {
     input.value = "";
   }
 }
+
+function toggleAllergy() {
+  const select = document.getElementById("allergySelect");
+  const input = document.getElementById("allergyInput");
+
+  if (select.value === "yes") {
+    input.style.display = "block";
+  } else {
+    input.style.display = "none";
+    input.value = "";
+  }
+}
+
 </script>
 
 </body>
